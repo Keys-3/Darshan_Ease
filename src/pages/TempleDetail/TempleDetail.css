@@ -1,0 +1,513 @@
+/* Temple Detail Page */
+
+.temple-detail__not-found {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 120px;
+}
+
+/* Hero */
+.td-hero {
+    position: relative;
+    height: 420px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.td-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+}
+
+.td-hero:hover .td-hero__bg {
+    transform: scale(1.03);
+}
+
+.td-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.td-hero__content {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 40px;
+}
+
+.td-hero__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    transition: all var(--transition-fast);
+}
+
+.td-hero__back:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.td-hero__badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.td-hero__title {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.td-hero__meta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    color: var(--neutral-300);
+    font-size: 0.95rem;
+}
+
+.td-hero__location,
+.td-hero__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.td-hero__star {
+    color: var(--gold-400);
+    fill: var(--gold-400);
+}
+
+.td-hero__reviews {
+    color: var(--neutral-400);
+    font-size: 0.85rem;
+}
+
+/* Content Grid */
+.td-content {
+    padding: 48px 24px 80px;
+}
+
+.td-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 36px;
+    align-items: start;
+}
+
+/* Info Cards */
+.td-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--neutral-100);
+    margin-bottom: 24px;
+}
+
+.td-card__title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--neutral-900);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.td-card__title svg {
+    color: var(--primary-500);
+}
+
+.td-card__text {
+    font-size: 0.95rem;
+    color: var(--neutral-600);
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.td-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.td-info-item {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: var(--neutral-50);
+    border-radius: var(--radius-md);
+}
+
+.td-info-item__icon {
+    color: var(--primary-500);
+    font-size: 1.2rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.td-info-item strong {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--neutral-700);
+    margin-bottom: 4px;
+}
+
+.td-info-item span {
+    font-size: 0.85rem;
+    color: var(--neutral-500);
+    line-height: 1.4;
+}
+
+.td-special-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 18px;
+    background: var(--gold-50);
+    border: 1px solid var(--gold-200);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    color: var(--gold-700);
+    line-height: 1.5;
+}
+
+.td-special-info svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.td-deity-name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--primary-700);
+    font-weight: 600;
+}
+
+/* Poojas */
+.td-poojas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.td-pooja {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--neutral-100);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.td-pooja:hover {
+    border-color: var(--primary-200);
+    background: var(--primary-50);
+}
+
+.td-pooja--selected {
+    border-color: var(--primary-500);
+    background: var(--primary-50);
+}
+
+.td-pooja__check {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--neutral-300);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.td-pooja--selected .td-pooja__check {
+    background: var(--primary-500);
+    border-color: var(--primary-500);
+    color: white;
+}
+
+.td-pooja__info {
+    flex: 1;
+}
+
+.td-pooja__info strong {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--neutral-800);
+    margin-bottom: 2px;
+}
+
+.td-pooja__info span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--neutral-500);
+}
+
+.td-pooja__duration {
+    color: var(--primary-600) !important;
+    font-weight: 500;
+}
+
+.td-pooja__price {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary-600);
+    white-space: nowrap;
+}
+
+/* Booking Card */
+.td-booking-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--neutral-100);
+    position: sticky;
+    top: 100px;
+}
+
+.td-booking-card__title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--neutral-900);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--neutral-100);
+}
+
+/* Fields */
+.td-field {
+    margin-bottom: 24px;
+}
+
+.td-field__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--neutral-700);
+    margin-bottom: 10px;
+}
+
+.td-field__label svg {
+    color: var(--primary-500);
+}
+
+.td-field__input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--neutral-200);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    color: var(--neutral-800);
+    background: var(--neutral-50);
+    transition: all var(--transition-fast);
+}
+
+.td-field__input:focus {
+    border-color: var(--primary-400);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+    background: white;
+}
+
+/* Visitors */
+.td-visitors {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.td-visitors__btn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--neutral-100);
+    color: var(--neutral-700);
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.td-visitors__btn:hover {
+    background: var(--primary-100);
+    color: var(--primary-700);
+}
+
+.td-visitors__count {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--neutral-800);
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Time Slots */
+.td-slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.td-slot {
+    position: relative;
+    padding: 14px;
+    border: 2px solid var(--neutral-100);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+}
+
+.td-slot:hover {
+    border-color: var(--primary-200);
+    background: var(--primary-50);
+}
+
+.td-slot--selected {
+    border-color: var(--primary-500);
+    background: var(--primary-50);
+}
+
+.td-slot--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.td-slot__time {
+    font-size: 0.8rem;
+    color: var(--neutral-500);
+    margin-bottom: 4px;
+}
+
+.td-slot__type {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--neutral-800);
+    margin-bottom: 8px;
+}
+
+.td-slot__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.td-slot__price {
+    font-weight: 700;
+    color: var(--primary-600);
+    font-size: 0.85rem;
+}
+
+.td-slot__avail {
+    font-size: 0.75rem;
+    color: var(--success);
+    font-weight: 500;
+}
+
+.td-slot__check {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    background: var(--primary-500);
+    color: white;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+/* Summary */
+.td-summary {
+    padding: 20px;
+    background: var(--neutral-50);
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+}
+
+.td-summary__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--neutral-600);
+}
+
+.td-summary__total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 12px;
+    margin-top: 8px;
+    border-top: 2px solid var(--neutral-200);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--neutral-900);
+}
+
+.td-booking-btn {
+    width: 100%;
+}
+
+.td-booking-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .td-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .td-booking-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .td-hero {
+        height: 320px;
+    }
+
+    .td-hero__title {
+        font-size: 2rem;
+    }
+
+    .td-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .td-slots {
+        grid-template-columns: 1fr;
+    }
+}

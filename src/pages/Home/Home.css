@@ -1,0 +1,506 @@
+/* ============================================
+   Home Page Styles
+   ============================================ */
+
+/* Hero Section */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 80px;
+}
+
+.hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero__bg-pattern {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(234, 179, 8, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 60% 80%, rgba(220, 38, 38, 0.04) 0%, transparent 50%);
+}
+
+.hero__bg-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--neutral-50) 0%, rgba(255, 247, 237, 0.5) 50%, var(--neutral-50) 100%);
+}
+
+.hero__content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--primary-50), var(--gold-50));
+    color: var(--primary-700);
+    padding: 8px 20px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid var(--primary-200);
+    margin-bottom: 24px;
+}
+
+.hero__badge svg {
+    color: var(--gold-500);
+}
+
+.hero__title {
+    font-family: var(--font-display);
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--neutral-900);
+    margin-bottom: 20px;
+}
+
+.hero__title-accent {
+    background: linear-gradient(135deg, var(--primary-500), var(--accent-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero__description {
+    font-size: 1.15rem;
+    color: var(--neutral-600);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 540px;
+}
+
+.hero__actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+}
+
+.hero__stats {
+    display: flex;
+    gap: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--neutral-200);
+}
+
+.hero__stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero__stat-value {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+.hero__stat-label {
+    font-size: 0.8rem;
+    color: var(--neutral-500);
+    font-weight: 500;
+}
+
+.hero__visual {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero__illustration {
+    width: 300px;
+    height: 350px;
+    position: relative;
+}
+
+.hero__temple-shape {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-100), var(--gold-100));
+    border-radius: 50% 50% 10px 10px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(249, 115, 22, 0.15);
+}
+
+.hero__temple-shape::before {
+    content: '🛕';
+    font-size: 6rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hero__card {
+    position: absolute;
+    background: white;
+    padding: 14px 20px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--neutral-800);
+    z-index: 2;
+    animation: float 4s ease-in-out infinite;
+    white-space: nowrap;
+}
+
+.hero__card-icon {
+    font-size: 1.3rem;
+    color: var(--primary-500);
+}
+
+.hero__card-badge {
+    font-size: 0.7rem;
+    background: var(--primary-100);
+    color: var(--primary-700);
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+}
+
+.hero__card--1 {
+    top: 60px;
+    left: 0;
+    animation-delay: 0s;
+}
+
+.hero__card--2 {
+    top: 50%;
+    right: 0;
+    animation-delay: 1s;
+}
+
+.hero__card--3 {
+    bottom: 60px;
+    left: 20px;
+    animation-delay: 2s;
+}
+
+/* Features Section */
+.features {
+    padding: 100px 0;
+    background: white;
+}
+
+.features__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.feature-card {
+    padding: 36px 28px;
+    border-radius: var(--radius-lg);
+    background: var(--neutral-50);
+    border: 1px solid var(--neutral-100);
+    transition: all var(--transition-normal);
+    text-align: center;
+}
+
+.feature-card:hover {
+    background: white;
+    border-color: var(--primary-200);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.feature-card__icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary-100), var(--gold-100));
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary-600);
+    margin: 0 auto 20px;
+    transition: all var(--transition-normal);
+}
+
+.feature-card:hover .feature-card__icon {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    color: white;
+    transform: scale(1.1);
+}
+
+.feature-card__title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--neutral-800);
+}
+
+.feature-card__desc {
+    font-size: 0.9rem;
+    color: var(--neutral-500);
+    line-height: 1.6;
+}
+
+/* Featured Temples */
+.featured-temples {
+    padding: 100px 0;
+    background: linear-gradient(180deg, var(--neutral-50) 0%, rgba(255, 247, 237, 0.3) 100%);
+}
+
+.featured-temples__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+}
+
+.featured-temples__cta {
+    text-align: center;
+    margin-top: 48px;
+}
+
+/* Testimonials */
+.testimonials {
+    padding: 100px 0;
+    background: white;
+}
+
+.testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.testimonial-card {
+    padding: 32px;
+    background: var(--neutral-50);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--neutral-100);
+    transition: all var(--transition-normal);
+}
+
+.testimonial-card:hover {
+    background: white;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.testimonial-card__stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.testimonial-card__star {
+    color: var(--gold-500);
+    fill: var(--gold-500);
+    font-size: 1rem;
+}
+
+.testimonial-card__text {
+    font-size: 0.95rem;
+    color: var(--neutral-600);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.testimonial-card__author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.testimonial-card__avatar {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--primary-400), var(--primary-600));
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.testimonial-card__author strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--neutral-800);
+}
+
+.testimonial-card__author span {
+    font-size: 0.8rem;
+    color: var(--neutral-500);
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 80px 0 100px;
+    background: var(--neutral-50);
+}
+
+.cta-card {
+    background: linear-gradient(135deg, var(--neutral-900), #2d1810);
+    border-radius: var(--radius-xl);
+    padding: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 60%);
+    border-radius: 50%;
+}
+
+.cta-card__content {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-card__title {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.cta-card__desc {
+    font-size: 1.05rem;
+    color: var(--neutral-400);
+    margin-bottom: 32px;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.cta-card__decoration {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-card__lotus {
+    font-size: 8rem;
+    color: var(--primary-500);
+    opacity: 0.3;
+    animation: float 5s ease-in-out infinite;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .hero__content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .hero__title {
+        font-size: 3rem;
+    }
+
+    .hero__description {
+        max-width: 100%;
+    }
+
+    .hero__actions {
+        justify-content: center;
+    }
+
+    .hero__stats {
+        justify-content: center;
+    }
+
+    .hero__visual {
+        height: 350px;
+    }
+
+    .features__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .featured-temples__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 100px;
+        min-height: auto;
+    }
+
+    .hero__title {
+        font-size: 2.4rem;
+    }
+
+    .hero__stats {
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero__visual {
+        display: none;
+    }
+
+    .features__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-temples__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .testimonials__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-card {
+        padding: 40px 28px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .cta-card__title {
+        font-size: 1.8rem;
+    }
+
+    .cta-card__desc {
+        max-width: 100%;
+    }
+
+    .cta-card__decoration {
+        display: none;
+    }
+}

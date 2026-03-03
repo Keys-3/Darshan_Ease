@@ -1,0 +1,150 @@
+.temple-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+}
+
+.temple-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.temple-card__image-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.temple-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.temple-card:hover .temple-card__image {
+    transform: scale(1.08);
+}
+
+.temple-card__overlay {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.temple-card__price-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.temple-card__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.temple-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.temple-card__star {
+    color: var(--gold-500);
+    fill: var(--gold-500);
+    font-size: 0.9rem;
+}
+
+.temple-card__rating-value {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--neutral-800);
+}
+
+.temple-card__reviews {
+    font-size: 0.8rem;
+    color: var(--neutral-500);
+    margin-left: 2px;
+}
+
+.temple-card__name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.temple-card__location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--neutral-500);
+    margin-bottom: 8px;
+}
+
+.temple-card__location svg {
+    color: var(--primary-500);
+    flex-shrink: 0;
+}
+
+.temple-card__deity {
+    font-size: 0.85rem;
+    color: var(--neutral-600);
+    margin-bottom: 12px;
+}
+
+.temple-card__deity strong {
+    color: var(--neutral-700);
+}
+
+.temple-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-top: 1px solid var(--neutral-100);
+    margin-bottom: 16px;
+    margin-top: auto;
+}
+
+.temple-card__meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--neutral-500);
+}
+
+.temple-card__meta-item svg {
+    color: var(--primary-500);
+}
+
+.temple-card__availability {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.temple-card__btn {
+    width: 100%;
+    text-align: center;
+}
