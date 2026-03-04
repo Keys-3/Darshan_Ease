@@ -6,7 +6,7 @@ import '../Login/Login.css';
 
 const Register = () => {
     const [formData, setFormData] = useState({
-        name: '', email: '', phone: '', password: '', confirmPassword: '',
+        name: '', email: '', phone: '', role: 'USER', password: '', confirmPassword: '',
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ const Register = () => {
 
         setLoading(true);
         try {
-            await register(formData.name, formData.email, formData.password, formData.phone);
+            await register(formData.name, formData.email, formData.password, formData.phone, formData.role);
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.error || 'Registration failed. Please try again.');
@@ -90,6 +90,21 @@ const Register = () => {
                             className="auth-form__input"
                             id="register-phone"
                         />
+                    </div>
+
+                    <div className="auth-form__group">
+                        <label className="auth-form__label">Role</label>
+                        <select
+                            name="role"
+                            value={formData.role}
+                            onChange={handleChange}
+                            className="auth-form__input"
+                            id="register-role"
+                        >
+                            <option value="USER">User — Book darshan & poojas</option>
+                            <option value="ORGANIZER">Organizer — Manage temples & slots</option>
+                            <option value="ADMIN">Admin — Full system access</option>
+                        </select>
                     </div>
 
                     <div className="auth-form__row">

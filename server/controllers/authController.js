@@ -22,7 +22,7 @@ exports.register = async (req, res, next) => {
             return res.status(400).json({ success: false, error: errors.array()[0].msg });
         }
 
-        const { name, email, password, phone } = req.body;
+        const { name, email, password, phone, role } = req.body;
 
         // Check if user exists
         const existingUser = await User.findOne({ email });
@@ -30,7 +30,7 @@ exports.register = async (req, res, next) => {
             return res.status(400).json({ success: false, error: 'Email already registered' });
         }
 
-        const user = await User.create({ name, email, password, phone });
+        const user = await User.create({ name, email, password, phone, role });
         sendTokenResponse(user, 201, res);
     } catch (err) {
         next(err);
