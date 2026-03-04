@@ -1,12 +1,25 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiCalendar, FiCheckCircle, FiShield, FiClock, FiUsers, FiArrowRight, FiStar } from 'react-icons/fi';
 import { GiTempleGate, GiLotus, GiPrayer } from 'react-icons/gi';
 import TempleCard from '../../components/TempleCard/TempleCard';
-import templesData from '../../data/temples';
+import api from '../../services/api';
 import './Home.css';
 
 const Home = () => {
-    const featuredTemples = templesData.filter(t => t.featured).slice(0, 4);
+    const [featuredTemples, setFeaturedTemples] = useState([]);
+
+    useEffect(() => {
+        const fetchFeatured = async () => {
+            try {
+                const res = await api.get('/temples?featured=true');
+                setFeaturedTemples(res.data.data.slice(0, 4));
+            } catch (err) {
+                console.error('Error fetching featured temples:', err);
+            }
+        };
+        fetchFeatured();
+    }, []);
 
     const features = [
         { icon: <FiSearch />, title: 'Browse Temples', desc: 'Explore hundreds of sacred temples across India with detailed information and photos.' },
@@ -119,7 +132,7 @@ const Home = () => {
                     </p>
                     <div className="featured-temples__grid">
                         {featuredTemples.map((temple, i) => (
-                            <TempleCard key={temple.id} temple={temple} index={i} />
+                            <TempleCard key={temple._id} temple={temple} index={i} />
                         ))}
                     </div>
                     <div className="featured-temples__cta">

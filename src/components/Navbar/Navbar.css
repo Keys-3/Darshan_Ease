@@ -105,6 +105,31 @@
     margin-left: 8px;
 }
 
+.navbar__auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 8px;
+}
+
+.navbar__user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-600);
+    background: var(--primary-50);
+    border-radius: var(--radius-full);
+}
+
+.navbar__logout {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .navbar__toggle {
     display: none;
     background: none;

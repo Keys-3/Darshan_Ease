@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
-import { FiMapPin, FiStar, FiClock, FiArrowRight } from 'react-icons/fi';
+import { FiMapPin, FiStar, FiArrowRight } from 'react-icons/fi';
 import './TempleCard.css';
 
 const TempleCard = ({ temple, index = 0 }) => {
-    const minPrice = Math.min(...temple.slots.map(s => s.price));
-    const totalSlots = temple.slots.reduce((acc, s) => acc + s.available, 0);
-
     return (
         <div className={`temple-card animate-fade-in-up delay-${(index % 5) + 1}`}>
             <div className="temple-card__image-wrapper">
@@ -13,9 +10,6 @@ const TempleCard = ({ temple, index = 0 }) => {
                 <div className="temple-card__overlay">
                     <span className="badge badge-gold">{temple.category}</span>
                     {temple.featured && <span className="badge badge-primary">Featured</span>}
-                </div>
-                <div className="temple-card__price-tag">
-                    {minPrice === 0 ? 'Free Entry' : `From ₹${minPrice}`}
                 </div>
             </div>
 
@@ -37,17 +31,7 @@ const TempleCard = ({ temple, index = 0 }) => {
                     <strong>Deity:</strong> {temple.deity}
                 </p>
 
-                <div className="temple-card__meta">
-                    <div className="temple-card__meta-item">
-                        <FiClock />
-                        <span>{temple.slots.length} Time Slots</span>
-                    </div>
-                    <div className="temple-card__meta-item">
-                        <span className="temple-card__availability">{totalSlots} slots available</span>
-                    </div>
-                </div>
-
-                <Link to={`/temple/${temple.id}`} className="btn btn-primary temple-card__btn">
+                <Link to={`/temple/${temple._id}`} className="btn btn-primary temple-card__btn">
                     View & Book <FiArrowRight />
                 </Link>
             </div>

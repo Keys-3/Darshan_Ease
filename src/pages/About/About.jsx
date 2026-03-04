@@ -13,10 +13,8 @@ const About = () => {
     ];
 
     const team = [
-        { name: 'Arun Krishnamurthy', role: 'Founder & CEO', initial: 'A' },
-        { name: 'Meera Patel', role: 'Head of Product', initial: 'M' },
-        { name: 'Karthik Ramanathan', role: 'CTO', initial: 'K' },
-        { name: 'Priya Sundaram', role: 'Head of Operations', initial: 'P' },
+        { name: 'Prithvi Singh', role: 'Backend Developer', initial: 'P' },
+        { name: 'Parth Gupta', role: 'Frontend Developer', initial: 'P' },
     ];
 
     return (

@@ -1,34 +1,51 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiCalendar, FiClock, FiMapPin, FiTrash2, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiMapPin, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import { GiTempleGate } from 'react-icons/gi';
+import api from '../../services/api';
 import './MyBookings.css';
 
 const MyBookings = () => {
     const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
     const location = useLocation();
-    const newBookingId = location.state?.newBooking;
+    const isNewBooking = location.state?.newBooking;
 
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem('darshanBookings') || '[]');
-        setBookings(saved.reverse());
+        fetchBookings();
     }, []);
 
-    const cancelBooking = (bookingId) => {
-        if (window.confirm('Are you sure you want to cancel this booking?')) {
-            const updated = bookings.map(b =>
-                b.id === bookingId ? { ...b, status: 'cancelled' } : b
-            );
-            setBookings(updated);
-            localStorage.setItem('darshanBookings', JSON.stringify(updated));
+    const fetchBookings = async () => {
+        try {
+            const res = await api.get('/bookings/my');
+            setBookings(res.data.data);
+        } catch (err) {
+            console.error('Error fetching bookings:', err);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const deleteBooking = (bookingId) => {
-        const updated = bookings.filter(b => b.id !== bookingId);
-        setBookings(updated);
-        localStorage.setItem('darshanBookings', JSON.stringify(updated));
+    const cancelBooking = async (bookingId) => {
+        if (window.confirm('Are you sure you want to cancel this booking?')) {
+            try {
+                await api.put(`/bookings/${bookingId}/cancel`);
+                setBookings(bookings.map(b =>
+                    b._id === bookingId ? { ...b, status: 'cancelled' } : b
+                ));
+            } catch (err) {
+                alert(err.response?.data?.error || 'Failed to cancel booking');
+            }
+        }
     };
+
+    if (loading) {
+        return (
+            <div className="bookings-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+                <div className="spinner"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="bookings-page">
@@ -56,18 +73,18 @@ const MyBookings = () => {
                     <div className="bookings-list">
                         {bookings.map((booking, i) => (
                             <div
-                                key={booking.id}
-                                className={`booking-card animate-fade-in-up delay-${(i % 4) + 1} ${newBookingId === booking.id ? 'booking-card--new' : ''
+                                key={booking._id}
+                                className={`booking-card animate-fade-in-up delay-${(i % 4) + 1} ${isNewBooking && i === 0 ? 'booking-card--new' : ''
                                     }`}
                             >
-                                {newBookingId === booking.id && (
+                                {isNewBooking && i === 0 && (
                                     <div className="booking-card__new-badge">
                                         <FiCheckCircle /> Booking Confirmed!
                                     </div>
                                 )}
 
                                 <div className="booking-card__image">
-                                    <img src={booking.templeImage} alt={booking.templeName} />
+                                    <img src={booking.temple?.image} alt={booking.temple?.name} />
                                     <div className={`booking-card__status booking-card__status--${booking.status}`}>
                                         {booking.status === 'confirmed' ? <FiCheckCircle /> : <FiAlertCircle />}
                                         {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
@@ -75,9 +92,9 @@ const MyBookings = () => {
                                 </div>
 
                                 <div className="booking-card__body">
-                                    <h3 className="booking-card__temple">{booking.templeName}</h3>
+                                    <h3 className="booking-card__temple">{booking.temple?.name}</h3>
                                     <div className="booking-card__location">
-                                        <FiMapPin /> {booking.location}
+                                        <FiMapPin /> {booking.temple?.location}
                                     </div>
 
                                     <div className="booking-card__details">
@@ -114,21 +131,12 @@ const MyBookings = () => {
                                             <span className="booking-card__total">Total: ₹{booking.total}</span>
                                         </div>
                                         <div className="booking-card__actions">
-                                            <span className="booking-card__id">#{booking.id}</span>
                                             {booking.status === 'confirmed' && (
                                                 <button
                                                     className="btn btn-sm btn-secondary"
-                                                    onClick={() => cancelBooking(booking.id)}
+                                                    onClick={() => cancelBooking(booking._id)}
                                                 >
                                                     Cancel
-                                                </button>
-                                            )}
-                                            {booking.status === 'cancelled' && (
-                                                <button
-                                                    className="booking-card__delete"
-                                                    onClick={() => deleteBooking(booking.id)}
-                                                >
-                                                    <FiTrash2 />
                                                 </button>
                                             )}
                                         </div>

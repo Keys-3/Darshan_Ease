@@ -1,19 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FiMapPin, FiStar, FiClock, FiInfo, FiCheck, FiCalendar, FiArrowLeft } from 'react-icons/fi';
 import { GiPrayer } from 'react-icons/gi';
-import templesData from '../../data/temples';
+import api from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import './TempleDetail.css';
 
 const TempleDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const temple = templesData.find(t => t.id === parseInt(id));
+    const { isAuthenticated } = useAuth();
 
+    const [temple, setTemple] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [selectedPoojas, setSelectedPoojas] = useState([]);
     const [selectedDate, setSelectedDate] = useState('');
     const [visitors, setVisitors] = useState(1);
+    const [booking, setBooking] = useState(false);
+
+    useEffect(() => {
+        fetchTemple();
+    }, [id]);
+
+    const fetchTemple = async () => {
+        try {
+            const res = await api.get(`/temples/${id}`);
+            setTemple(res.data.data);
+        } catch (err) {
+            console.error('Error fetching temple:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+                <div className="spinner"></div>
+            </div>
+        );
+    }
 
     if (!temple) {
         return (
@@ -26,48 +53,53 @@ const TempleDetail = () => {
 
     const togglePooja = (poojaId) => {
         setSelectedPoojas(prev =>
-            prev.includes(poojaId) ? prev.filter(id => id !== poojaId) : [...prev, poojaId]
+            prev.includes(poojaId) ? prev.filter(pid => pid !== poojaId) : [...prev, poojaId]
         );
     };
 
     const getTotal = () => {
         let total = 0;
         if (selectedSlot) {
-            const slot = temple.slots.find(s => s.id === selectedSlot);
+            const slot = temple.slots.find(s => s._id === selectedSlot);
             total += (slot?.price || 0) * visitors;
         }
         selectedPoojas.forEach(pId => {
-            const pooja = temple.poojas.find(p => p.id === pId);
+            const pooja = temple.poojas.find(p => p._id === pId);
             total += pooja?.price || 0;
         });
         return total;
     };
 
-    const handleBooking = () => {
+    const handleBooking = async () => {
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
         if (!selectedSlot || !selectedDate) {
             alert('Please select a date and time slot');
             return;
         }
-        const slot = temple.slots.find(s => s.id === selectedSlot);
-        const poojas = selectedPoojas.map(pId => temple.poojas.find(p => p.id === pId));
-        const booking = {
-            id: 'DE' + Date.now(),
-            templeId: temple.id,
-            templeName: temple.name,
-            templeImage: temple.image,
-            location: temple.location,
-            date: selectedDate,
-            slot: slot,
-            poojas: poojas,
-            visitors: visitors,
-            total: getTotal(),
-            status: 'confirmed',
-            bookedAt: new Date().toISOString(),
-        };
-        const existing = JSON.parse(localStorage.getItem('darshanBookings') || '[]');
-        existing.push(booking);
-        localStorage.setItem('darshanBookings', JSON.stringify(existing));
-        navigate('/bookings', { state: { newBooking: booking.id } });
+
+        setBooking(true);
+        try {
+            const slot = temple.slots.find(s => s._id === selectedSlot);
+            const poojas = selectedPoojas.map(pId => temple.poojas.find(p => p._id === pId)).filter(Boolean);
+
+            await api.post('/bookings', {
+                temple: temple._id,
+                slot: selectedSlot,
+                poojas,
+                date: selectedDate,
+                visitors,
+                total: getTotal(),
+            });
+
+            navigate('/bookings', { state: { newBooking: true } });
+        } catch (err) {
+            alert(err.response?.data?.error || 'Booking failed. Please try again.');
+        } finally {
+            setBooking(false);
+        }
     };
 
     const today = new Date().toISOString().split('T')[0];
@@ -101,7 +133,6 @@ const TempleDetail = () => {
                 <div className="td-grid">
                     {/* Left Column - Info */}
                     <div className="td-info">
-                        {/* About */}
                         <div className="td-card">
                             <h2 className="td-card__title">About This Temple</h2>
                             <p className="td-card__text">{temple.description}</p>
@@ -128,24 +159,22 @@ const TempleDetail = () => {
                             )}
                         </div>
 
-                        {/* Deity */}
                         <div className="td-card">
                             <h2 className="td-card__title"><GiPrayer /> Deity</h2>
                             <p className="td-deity-name">{temple.deity}</p>
                         </div>
 
-                        {/* Available Poojas */}
                         <div className="td-card">
                             <h2 className="td-card__title">Available Poojas & Sevas</h2>
                             <div className="td-poojas">
                                 {temple.poojas.map(pooja => (
                                     <div
-                                        key={pooja.id}
-                                        className={`td-pooja ${selectedPoojas.includes(pooja.id) ? 'td-pooja--selected' : ''}`}
-                                        onClick={() => togglePooja(pooja.id)}
+                                        key={pooja._id}
+                                        className={`td-pooja ${selectedPoojas.includes(pooja._id) ? 'td-pooja--selected' : ''}`}
+                                        onClick={() => togglePooja(pooja._id)}
                                     >
                                         <div className="td-pooja__check">
-                                            {selectedPoojas.includes(pooja.id) && <FiCheck />}
+                                            {selectedPoojas.includes(pooja._id) && <FiCheck />}
                                         </div>
                                         <div className="td-pooja__info">
                                             <strong>{pooja.name}</strong>
@@ -166,7 +195,6 @@ const TempleDetail = () => {
                         <div className="td-booking-card">
                             <h2 className="td-booking-card__title">Book Your Darshan</h2>
 
-                            {/* Date Selection */}
                             <div className="td-field">
                                 <label className="td-field__label">
                                     <FiCalendar /> Select Date
@@ -181,7 +209,6 @@ const TempleDetail = () => {
                                 />
                             </div>
 
-                            {/* Visitors */}
                             <div className="td-field">
                                 <label className="td-field__label">Number of Visitors</label>
                                 <div className="td-visitors">
@@ -197,7 +224,6 @@ const TempleDetail = () => {
                                 </div>
                             </div>
 
-                            {/* Time Slots */}
                             <div className="td-field">
                                 <label className="td-field__label">
                                     <FiClock /> Select Time Slot
@@ -205,9 +231,9 @@ const TempleDetail = () => {
                                 <div className="td-slots">
                                     {temple.slots.map(slot => (
                                         <div
-                                            key={slot.id}
-                                            className={`td-slot ${selectedSlot === slot.id ? 'td-slot--selected' : ''} ${slot.available === 0 ? 'td-slot--disabled' : ''}`}
-                                            onClick={() => slot.available > 0 && setSelectedSlot(slot.id)}
+                                            key={slot._id}
+                                            className={`td-slot ${selectedSlot === slot._id ? 'td-slot--selected' : ''} ${slot.available === 0 ? 'td-slot--disabled' : ''}`}
+                                            onClick={() => slot.available > 0 && setSelectedSlot(slot._id)}
                                         >
                                             <div className="td-slot__time">{slot.time}</div>
                                             <div className="td-slot__type">{slot.type}</div>
@@ -219,7 +245,7 @@ const TempleDetail = () => {
                                                     {slot.available > 0 ? `${slot.available} left` : 'Full'}
                                                 </span>
                                             </div>
-                                            {selectedSlot === slot.id && (
+                                            {selectedSlot === slot._id && (
                                                 <div className="td-slot__check"><FiCheck /></div>
                                             )}
                                         </div>
@@ -227,14 +253,13 @@ const TempleDetail = () => {
                                 </div>
                             </div>
 
-                            {/* Summary */}
                             <div className="td-summary">
                                 <div className="td-summary__row">
                                     <span>Darshan ({visitors} visitor{visitors > 1 ? 's' : ''})</span>
-                                    <span>₹{selectedSlot ? (temple.slots.find(s => s.id === selectedSlot)?.price || 0) * visitors : 0}</span>
+                                    <span>₹{selectedSlot ? (temple.slots.find(s => s._id === selectedSlot)?.price || 0) * visitors : 0}</span>
                                 </div>
                                 {selectedPoojas.map(pId => {
-                                    const p = temple.poojas.find(p => p.id === pId);
+                                    const p = temple.poojas.find(p => p._id === pId);
                                     return (
                                         <div key={pId} className="td-summary__row">
                                             <span>{p.name}</span>
@@ -251,9 +276,9 @@ const TempleDetail = () => {
                             <button
                                 className="btn btn-primary btn-lg td-booking-btn"
                                 onClick={handleBooking}
-                                disabled={!selectedSlot || !selectedDate}
+                                disabled={!selectedSlot || !selectedDate || booking}
                             >
-                                Confirm Booking
+                                {!isAuthenticated ? 'Login to Book' : booking ? 'Booking...' : 'Confirm Booking'}
                             </button>
                         </div>
                     </div>

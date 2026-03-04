@@ -1,19 +1,47 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FiSearch, FiFilter, FiMapPin } from 'react-icons/fi';
 import TempleCard from '../../components/TempleCard/TempleCard';
-import templesData from '../../data/temples';
+import api from '../../services/api';
 import './Temples.css';
 
 const Temples = () => {
+    const [temples, setTemples] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [selectedState, setSelectedState] = useState('All');
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [filterOptions, setFilterOptions] = useState({ states: [], categories: [] });
 
-    const states = ['All', ...new Set(templesData.map(t => t.state))];
-    const categories = ['All', ...new Set(templesData.map(t => t.category))];
+    useEffect(() => {
+        fetchTemples();
+        fetchFilterOptions();
+    }, []);
+
+    const fetchTemples = async () => {
+        try {
+            const res = await api.get('/temples');
+            setTemples(res.data.data);
+        } catch (err) {
+            console.error('Error fetching temples:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchFilterOptions = async () => {
+        try {
+            const res = await api.get('/temples/filters/options');
+            setFilterOptions(res.data.data);
+        } catch (err) {
+            console.error('Error fetching filter options:', err);
+        }
+    };
+
+    const states = ['All', ...filterOptions.states];
+    const categories = ['All', ...filterOptions.categories];
 
     const filteredTemples = useMemo(() => {
-        return templesData.filter(temple => {
+        return temples.filter(temple => {
             const matchSearch = temple.name.toLowerCase().includes(search.toLowerCase()) ||
                 temple.location.toLowerCase().includes(search.toLowerCase()) ||
                 temple.deity.toLowerCase().includes(search.toLowerCase());
@@ -21,7 +49,15 @@ const Temples = () => {
             const matchCategory = selectedCategory === 'All' || temple.category === selectedCategory;
             return matchSearch && matchState && matchCategory;
         });
-    }, [search, selectedState, selectedCategory]);
+    }, [search, selectedState, selectedCategory, temples]);
+
+    if (loading) {
+        return (
+            <div className="temples-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+                <div className="spinner"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="temples-page">
@@ -84,7 +120,7 @@ const Temples = () => {
                 {filteredTemples.length > 0 ? (
                     <div className="temples-grid">
                         {filteredTemples.map((temple, i) => (
-                            <TempleCard key={temple.id} temple={temple} index={i} />
+                            <TempleCard key={temple._id} temple={temple} index={i} />
                         ))}
                     </div>
                 ) : (

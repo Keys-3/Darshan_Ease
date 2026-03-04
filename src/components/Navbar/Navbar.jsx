@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiSun } from 'react-icons/fi';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FiMenu, FiX, FiSun, FiUser, FiLogOut, FiLogIn } from 'react-icons/fi';
 import { GiTempleGate } from 'react-icons/gi';
+import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
+    const { isAuthenticated, user, logout } = useAuth();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -20,6 +23,11 @@ const Navbar = () => {
     useEffect(() => {
         setIsMenuOpen(false);
     }, [location]);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     const navLinks = [
         { path: '/', label: 'Home' },
@@ -52,9 +60,26 @@ const Navbar = () => {
                             {location.pathname === link.path && <span className="navbar__link-indicator" />}
                         </Link>
                     ))}
-                    <Link to="/temples" className="btn btn-primary btn-sm navbar__cta">
-                        <FiSun /> Book Darshan
-                    </Link>
+
+                    {isAuthenticated ? (
+                        <div className="navbar__auth">
+                            <span className="navbar__user">
+                                <FiUser /> {user?.name?.split(' ')[0]}
+                            </span>
+                            <button onClick={handleLogout} className="btn btn-sm btn-secondary navbar__logout">
+                                <FiLogOut /> Logout
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="navbar__auth">
+                            <Link to="/login" className="btn btn-sm btn-secondary">
+                                <FiLogIn /> Login
+                            </Link>
+                            <Link to="/register" className="btn btn-primary btn-sm navbar__cta">
+                                <FiSun /> Register
+                            </Link>
+                        </div>
+                    )}
                 </div>
 
                 <button
